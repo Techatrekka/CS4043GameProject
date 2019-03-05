@@ -20,4 +20,55 @@ local physics = require( "physics" )
 physics.start()
 
 physics.addBody( platform, "static" )
-physics.addBody( Sprite, "dynamic", { radius=50, bounce=1.001 } )
+physics.addBody( Sprite, "dynamic" )
+
+local function walkPerson(event)
+  if (event.keyName == 'd' and event.phase == 'down') then
+    Sprite.x = Sprite.x + 15
+    return true
+  end
+  if (event.keyName == 'a' and event.phase == 'down') then
+    Sprite.x = Sprite.x - 15
+    return true
+  end
+  if(event.keyName == 'space') then
+    Sprite:applyLinearImpulse(0, -.2)
+  end
+end
+
+Runtime:addEventListener( "key", walkPerson )
+
+local testObj = display.newRect( display.contentCenterX, display.contentCenterY, 20, 20 )
+testObj.deltaPerFrame = { 0, 0 }
+
+local function frameUpdate()
+    testObj.x = testObj.x + testObj.deltaPerFrame[1]
+    testObj.y = testObj.y + testObj.deltaPerFrame[2]
+end
+Runtime:addEventListener( "enterFrame", frameUpdate )
+
+local function handleController( event )
+
+    local touchOverButton = detectKey( event )
+
+    if ( event.phase == "began" ) then
+
+        if ( touchOverButton ~= nil ) then
+            if not ( buttonGroup.touchID ) then
+                -- Set/isolate this touch ID
+                buttonGroup.keyID = event.id
+                -- Set the active button
+                buttonGroup.activeButton = touchOverButton
+                -- Take proper action based on button ID
+                if ( buttonGroup.activeButton.ID == "left" ) then
+                    testObj.deltaPerFrame = { -2, 0 }
+                elseif ( buttonGroup.activeButton.ID == "right" ) then
+                    testObj.deltaPerFrame = { 2, 0 }
+                end
+            end
+            return true
+        end
+
+    elseif ( event.phase == "moved" ) then
+end
+end

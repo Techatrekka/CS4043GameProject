@@ -12,63 +12,49 @@ local platform = display.newImageRect( "platform.png", 100, 50 )
 platform.x = display.contentCenterX
 platform.y = display.contentHeight-100
 
+local platform2 = display.newImageRect( "platform.png", 100, 50 )
+platform2.x = display.contentCenterX+300
+platform2.y = display.contentHeight-100
+
+local platform3 = display.newImageRect( "platform.png", 100, 50 )
+platform3.x = display.contentCenterX-200
+platform3.y = display.contentHeight-100
+
+local platform4 = display.newImageRect( "platform.png", 100, 50 )
+platform4.x = display.contentCenterX+450
+platform4.y = display.contentHeight-100
+
+
 local Sprite = display.newImageRect ("Sprite1.png", 30, 100)
 Sprite.x = display.contentCenterX
 Sprite.y = display.contentHeight-200
 
 local physics = require( "physics" )
 physics.start()
+physics.setGravity(0, 50)
 
 physics.addBody( platform, "static" )
-physics.addBody( Sprite, "dynamic" )
+physics.addBody( platform2, "static" )
+physics.addBody( platform3, "static" )
+physics.addBody( platform4, "static" )
+physics.addBody( Sprite, "dynamic", {friction = 1.0} )
+
+Sprite.isFixedRotation = true
 
 local function walkPerson(event)
   if (event.keyName == 'd' and event.phase == 'down') then
-    Sprite.x = Sprite.x + 15
+    while ((event.keyName == 'd' and event.phase == 'down') == true) do
+    Sprite:setLinearVelocity(200,0)
     return true
+    end
   end
   if (event.keyName == 'a' and event.phase == 'down') then
-    Sprite.x = Sprite.x - 15
+    Sprite:setLinearVelocity(-200, 0)
     return true
   end
   if(event.keyName == 'space') then
-    Sprite:applyLinearImpulse(0, -.2)
+    Sprite:applyLinearImpulse(0, -.25)
   end
 end
 
 Runtime:addEventListener( "key", walkPerson )
-
-local testObj = display.newRect( display.contentCenterX, display.contentCenterY, 20, 20 )
-testObj.deltaPerFrame = { 0, 0 }
-
-local function frameUpdate()
-    testObj.x = testObj.x + testObj.deltaPerFrame[1]
-    testObj.y = testObj.y + testObj.deltaPerFrame[2]
-end
-Runtime:addEventListener( "enterFrame", frameUpdate )
-
-local function handleController( event )
-
-    local touchOverButton = detectKey( event )
-
-    if ( event.phase == "began" ) then
-
-        if ( touchOverButton ~= nil ) then
-            if not ( buttonGroup.touchID ) then
-                -- Set/isolate this touch ID
-                buttonGroup.keyID = event.id
-                -- Set the active button
-                buttonGroup.activeButton = touchOverButton
-                -- Take proper action based on button ID
-                if ( buttonGroup.activeButton.ID == "left" ) then
-                    testObj.deltaPerFrame = { -2, 0 }
-                elseif ( buttonGroup.activeButton.ID == "right" ) then
-                    testObj.deltaPerFrame = { 2, 0 }
-                end
-            end
-            return true
-        end
-
-    elseif ( event.phase == "moved" ) then
-end
-end

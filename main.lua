@@ -3,58 +3,50 @@
 -- main.lua
 --
 -----------------------------------------------------------------------------------------
--- Your code here
-local background = display.newImageRect( "Backgroud.png", 1280, 720 )
-background.x = display.contentCenterX
-background.y = display.contentCenterY
 
-local platform = display.newImageRect( "platform.png", 100, 50 )
-platform.x = display.contentCenterX
-platform.y = display.contentHeight-100
+ 
 
-local platform2 = display.newImageRect( "platform.png", 100, 50 )
-platform2.x = display.contentCenterX+300
-platform2.y = display.contentHeight-100
+local Background = display.newImageRect("Background.png", 360, 570)
+Background.x = display.contentCenterX
+Background.y = display.contentCenterY 
 
-local platform3 = display.newImageRect( "platform.png", 100, 50 )
-platform3.x = display.contentCenterX-200
-platform3.y = display.contentHeight-100
-
-local platform4 = display.newImageRect( "platform.png", 100, 50 )
-platform4.x = display.contentCenterX+450
-platform4.y = display.contentHeight-100
+local ULMAP = display.newImageRect("ULMAP.png", 300, 200)
+ULMAP.x = display.contentCenterX+20
+ULMAP.y = display.contentCenterY -90
 
 
-local Sprite = display.newImageRect ("Sprite1.png", 30, 100)
-Sprite.x = display.contentCenterX
-Sprite.y = display.contentHeight-200
+local playButton = display.newImageRect("playButton.png", 180, 100)
+playButton.x = display.contentCenterX
+playButton.y = display.contentCenterY +70
 
-local physics = require( "physics" )
-physics.start()
-physics.setGravity(0, 50)
+local quitButton = display.newImageRect("quitButton.png", 180, 100)
+quitButton.x = display.contentCenterX
+quitButton.y = display.contentCenterY +200
 
-physics.addBody( platform, "static" )
-physics.addBody( platform2, "static" )
-physics.addBody( platform3, "static" )
-physics.addBody( platform4, "static" )
-physics.addBody( Sprite, "dynamic", {friction = 1.0} )
+local Lepresean = display.newImageRect("Lepresean.png", 100, 150)
+Lepresean.x = display.contentCenterX +70
+Lepresean.y = display.contentCenterY -70
 
-Sprite.isFixedRotation = true
+local Lepresean2 = display.newImageRect("Lepresean2.png", 250, 100)
+Lepresean2.x = display.contentCenterX 
+Lepresean2.y = display.contentCenterY -225
 
-local function walkPerson(event)
-  if (event.keyName == 'd' and event.phase == 'down') then
-    while ((event.keyName == 'd' and event.phase == 'down') == true) do
-    Sprite:setLinearVelocity(200,0)
-    return true
-    end
-  end
-  if (event.keyName == 'a' and event.phase == 'down') then
-    Sprite:setLinearVelocity(-200, 0)
-    return true
-  end
-  if(event.keyName == 'space') then
-    Sprite:applyLinearImpulse(0, -.25)
-  end
+
+
+local function pushPlayButton()
+    
+
+
 end
 
-Runtime:addEventListener( "key", walkPerson )
+local function pushQuitButton()
+    
+
+
+end
+
+playButton:addEventListener("tap", pushPlayButton)
+quitButton:addEventListener("tap", pushQuitButton)
+
+
+
